@@ -2,11 +2,13 @@ import curses
 from curses import wrapper
 
 
+
 def main(window):
 	
 	
-	playerY = 0
-	playerX = 0
+	playerY = 1
+	playerX = 1
+	borders = [u'─', u'│', u'┌', u'┐', u'└', u'┘', u'├', u'├']
 	
 	#Setup Window
 	window = curses.initscr()
@@ -14,28 +16,31 @@ def main(window):
 	curses.cbreak()
 	curses.curs_set(False)	
 	window.keypad(True)
-	window.border(0)
 
 	while True:
-		
+		window.addch(10, 10, '1')
 		keypress = window.getch()
 		try:
 			if keypress == ord('w'):
-				window.addch(playerY, playerX, ' ')
-				window.addch(playerY - 1, playerX, 'x')
-				playerY = playerY - 1
+				if chr(window.inch(playerY - 1, playerX)) != '1':
+					window.addch(playerY, playerX, ' ')
+					window.addstr(playerY - 1, playerX, u'😀')
+					playerY = playerY - 1
 			if keypress == ord('s'):
-				window.addch(playerY, playerX, ' ')
-				window.addch(playerY + 1, playerX, 'x')
-				playerY = playerY + 1	
+				if chr(window.inch(playerY + 1, playerX)) != '1':
+					window.addch(playerY, playerX, ' ')
+					window.addstr(playerY + 1, playerX, u'😀')
+					playerY = playerY + 1	
 			if keypress == ord('a'):
-				window.addch(playerY, playerX, ' ')
-				window.addch(playerY, playerX - 1, 'x')
-				playerX = playerX - 1			
+				if chr(window.inch(playerY, playerX - 1)) != '1':
+					window.addch(playerY, playerX, ' ')
+					window.addstr(playerY, playerX - 1, u'😀')
+					playerX = playerX - 1			
 			if keypress == ord('d'):
-				window.addch(playerY, playerX, ' ')
-				window.addch(playerY, playerX + 1, 'x')	
-				playerX = playerX + 1		
+				if chr(window.inch(playerY, playerX + 1)) != '1':
+					window.addch(playerY, playerX, ' ')
+					window.addstr(playerY, playerX + 1, u'😀')	
+					playerX = playerX + 1		
 		except(curses.error):
 			pass
 wrapper(main)
